@@ -15,9 +15,11 @@
 - Søk
 - Filtrering
 
-## v1.2
+## v1.2 – Kvitteringsdeling
 
-- Kvitteringsdeling
+- Deling av enkeltkvittering via bilde eller PDF
+- Forbedret delingsflyt for bruktmarked
+- Mulighet for å motta og lagre delt kvittering i appen
 
 ## v2
 
