@@ -1,7 +1,11 @@
-import { View, Text, FlatList, StyleSheet } from "react-native";
+import { Text, FlatList, StyleSheet } from "react-native";
 import ScreenContainer from "../components/ScreenContainer";
 import ReceiptRow from "../components/ReceiptRow";
 import PrimaryButton from "../components/PrimaryButton";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { RootStackParamList } from "../../App";
+
+type Props = NativeStackScreenProps<RootStackParamList, "Archive">;
 
 const dummyReceipts = [
   { id: "1", issuer: "Oslo Taxi", date: "12 Mar", amount: "345 NOK" },
@@ -9,7 +13,7 @@ const dummyReceipts = [
   { id: "3", issuer: "Power", date: "01 Jan", amount: "599 NOK" },
 ];
 
-export default function ArchiveScreen({ navigation }: any) {
+export default function ArchiveScreen({ navigation }: Props) {
   return (
     <ScreenContainer>
       <Text style={styles.title}>Arkiv</Text>
@@ -27,7 +31,7 @@ export default function ArchiveScreen({ navigation }: any) {
 
       <PrimaryButton
         title="Ny kvittering"
-        onPress={() => navigation.navigate("Info")}
+        onPress={() => navigation.navigate("Camera")}
       />
     </ScreenContainer>
   );
