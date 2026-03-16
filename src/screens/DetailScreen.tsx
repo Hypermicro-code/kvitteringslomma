@@ -6,12 +6,15 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { RootStackParamList } from "../../App";
 import { getReceiptById } from "../data/receiptsRepo";
 import type { Receipt } from "../models/Receipt";
+import { shareImage, shareReceiptPdf } from "../utils/export";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Detail">;
 
 export default function DetailScreen({ route }: Props) {
   const { receiptId } = route.params;
   const [receipt, setReceipt] = useState<Receipt | null>(null);
+  const [isSharingImage, setIsSharingImage] = useState(false);
+  const [isSharingPdf, setIsSharingPdf] = useState(false);
 
   useEffect(() => {
     async function loadReceipt() {
@@ -25,6 +28,34 @@ export default function DetailScreen({ route }: Props) {
 
     loadReceipt();
   }, [receiptId]);
+
+  async function handleShareImage() {
+    if (!receipt || isSharingImage) return;
+
+    try {
+      setIsSharingImage(true);
+      await shareImage(receipt.image_path);
+    } catch (error) {
+      console.error("Kunne ikke dele bilde:", error);
+      Alert.alert("Feil", "Kunne ikke dele bildet.");
+    } finally {
+      setIsSharingImage(false);
+    }
+  }
+
+  async function handleSharePdf() {
+    if (!receipt || isSharingPdf) return;
+
+    try {
+      setIsSharingPdf(true);
+      await shareReceiptPdf(receipt);
+    } catch (error) {
+      console.error("Kunne ikke dele PDF:", error);
+      Alert.alert("Feil", "Kunne ikke lage eller dele PDF.");
+    } finally {
+      setIsSharingPdf(false);
+    }
+  }
 
   if (!receipt) {
     return (
@@ -55,11 +86,17 @@ export default function DetailScreen({ route }: Props) {
         <Image source={{ uri: receipt.image_path }} style={styles.image} resizeMode="contain" />
       </View>
 
-      <PrimaryButton title="Eksporter PDF" onPress={() => Alert.alert("Kommer snart")} />
+      <PrimaryButton
+        title={isSharingPdf ? "Lager PDF..." : "Del PDF"}
+        onPress={handleSharePdf}
+      />
 
       <View style={{ height: 10 }} />
 
-      <PrimaryButton title="Del bilde" onPress={() => Alert.alert("Kommer snart")} />
+      <PrimaryButton
+        title={isSharingImage ? "Deler bilde..." : "Del bilde"}
+        onPress={handleShareImage}
+      />
     </ScreenContainer>
   );
 }
