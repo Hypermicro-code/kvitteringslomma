@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Kvitteringslomma trenger tilgang til kamera for å ta bilde av kvitteringer."
+        }
+      ]
+    ]
+  }
+}
